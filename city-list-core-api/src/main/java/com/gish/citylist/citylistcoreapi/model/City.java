@@ -6,7 +6,8 @@ import javax.persistence.*;
 @Table(name = "city")
 public class City {
     private @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "city_sequence_generator")
+    @SequenceGenerator(name = "city_sequence_generator", sequenceName = "city_sequence", initialValue = 1001, allocationSize = 1)
     Long id;
     private String name;
     private String photo;
@@ -15,6 +16,12 @@ public class City {
     }
 
     public City(String name, String photo) {
+        this.name = name;
+        this.photo = photo;
+    }
+
+    public City(Long id, String name, String photo) {
+        this.id = id;
         this.name = name;
         this.photo = photo;
     }

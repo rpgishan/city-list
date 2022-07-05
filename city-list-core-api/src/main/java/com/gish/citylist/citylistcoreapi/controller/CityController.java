@@ -1,52 +1,34 @@
 package com.gish.citylist.citylistcoreapi.controller;
 
-import com.gish.citylist.citylistcoreapi.exceptions.CityNotFoundException;
-import com.gish.citylist.citylistcoreapi.model.City;
-import com.gish.citylist.citylistcoreapi.repository.CityRepository;
+import com.gish.citylist.citylistcoreapi.dto.CityDTO;
+import com.gish.citylist.citylistcoreapi.service.CityService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CityController {
-    private final CityRepository repository;
+    private final CityService service;
 
-    public CityController(CityRepository repository) {
-        this.repository = repository;
+    public CityController(CityService service) {
+        this.service = service;
     }
 
-    // Aggregate root
-    // tag::get-aggregate-root[]
     @GetMapping("/city")
-    public Iterable<City> all() {
-        return repository.findAll();
+    public Iterable<CityDTO> all() {
+        return service.findAll();
     }
-    // end::get-aggregate-root[]
 
     @PostMapping("/city")
-    public City newCity(@RequestBody City newCity) { //TODO create CityDTO
-        return repository.save(newCity);
+    public CityDTO newCity(@RequestBody CityDTO cityDTO) {
+        return service.save(cityDTO);
     }
-
-    // Single item
 
     @GetMapping("/city/{id}")
-    public City one(@PathVariable Long id) {
-
-        return repository.findById(id)
-                .orElseThrow(() -> new CityNotFoundException(id));
+    public CityDTO one(@PathVariable Long id) {
+        return service.findById(id);
     }
 
-    @PutMapping("/employees/{id}")
-    public City replaceCity(@RequestBody City newCity, @PathVariable Long id) {
-
-        return repository.findById(id)
-                .map(city -> {
-                    city.setName(newCity.getName());
-                    city.setPhoto(newCity.getPhoto());
-                    return repository.save(city);
-                })
-                .orElseGet(() -> {
-                    newCity.setId(id);
-                    return repository.save(newCity);
-                });
+    @PutMapping("/city/{id}")
+    public CityDTO replaceCity(@RequestBody CityDTO newCity, @PathVariable Long id) {
+        return service.replaceCity(newCity, id);
     }
 }
