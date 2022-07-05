@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_city_table
+      author: Gishan Pemathilake
+      changes:
+        - createTable:
+            tableName: city
+            columns:
+              - column:
+                name: id
+                type: BIGINT
+                constraints:
+                  nullable: false
+                  primaryKey: true
+              - column:
+                name: name
+                type: VARCHAR(50)
+                constraints:
+                  nullable: false
+              - column:
+                name: photo
+                type: VARCHAR(500)
+                constraints:
+                  nullable: false
+
+  - changeSet:
+      id: load_cities
+      author: Gishan Pemathilake
+      changes:
+        - loadUpdateData:
+            tableName: city
+            encoding: UTF-8
+            file: cities.csv
+            quotchar: ''''
+            relativeToChangeLogFile: true
+            separator: ','
+            usePreparedStatements: true
+            primaryKey: id
+            columns:
+              - column:
+                  name: id
+                  type: NUMERIC
+              - column:
+                  name: name
+                  type: STRING
+              - column:
+                  name: photo
+                  type: STRING
