@@ -11,7 +11,7 @@ public class CityNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(CityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String cityNotFoundHandler(CityNotFoundException ex) {
+    String cityNotFoundHandler(final CityNotFoundException ex) {
         return ex.getMessage();
     }
 }

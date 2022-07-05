@@ -1,7 +1,7 @@
 package com.gish.citylist.citylistcoreapi.controller;
 
-import com.gish.citylist.citylistcoreapi.model.JwtRequest;
-import com.gish.citylist.citylistcoreapi.model.JwtResponse;
+import com.gish.citylist.citylistcoreapi.dto.JwtRequestDTO;
+import com.gish.citylist.citylistcoreapi.dto.JwtResponseDTO;
 import com.gish.citylist.citylistcoreapi.service.JwtUserDetailsService;
 import com.gish.citylist.citylistcoreapi.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +17,21 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class JwtAuthenticationController {
 
-    @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
     private JwtUserDetailsService userDetailsService;
 
+    @Autowired
+    public JwtAuthenticationController(final AuthenticationManager authenticationManager, final JwtTokenUtil jwtTokenUtil, final JwtUserDetailsService userDetailsService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.userDetailsService = userDetailsService;
+    }
+
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody final JwtRequestDTO authenticationRequest) throws Exception {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
@@ -36,10 +40,10 @@ public class JwtAuthenticationController {
 
         final String token = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new JwtResponse(token));
+        return ResponseEntity.ok(new JwtResponseDTO(token));
     }
 
-    private void authenticate(String username, String password) throws Exception {
+    private void authenticate(final String username, final String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {

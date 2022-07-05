@@ -1,11 +1,13 @@
 package com.gish.citylist.citylistcoreapi.dto;
 
 import com.gish.citylist.citylistcoreapi.model.City;
-
-import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
-public class CityDTO {
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+
+public class CityDTO implements Serializable {
+    private Long id;
     @NotNull(message = "City Name can not be blank")
     @Length(min = 1, max = 50, message = "Length of the City Name should be between 1 to 50")
     private String name;
@@ -17,21 +19,36 @@ public class CityDTO {
     public CityDTO() {
     }
 
-    public CityDTO(String name, String photo) {
+    public CityDTO(final String name, final String photo) {
         this.name = name;
         this.photo = photo;
     }
 
-    public CityDTO(City city) {
+    public CityDTO(Long id, String name, String photo) {
+        this.id = id;
+        this.name = name;
+        this.photo = photo;
+    }
+
+    public CityDTO(final City city) {
+        this.id = city.getId();
         this.name = city.getName();
         this.photo = city.getPhoto();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -39,7 +56,7 @@ public class CityDTO {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(final String photo) {
         this.photo = photo;
     }
 }

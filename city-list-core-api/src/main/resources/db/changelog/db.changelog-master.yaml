@@ -46,3 +46,42 @@ databaseChangeLog:
               - column:
                   name: photo
                   type: STRING
+  - changeSet:
+      id: create_user_table
+      author: Gishan Pemathilake
+      changes:
+        - createTable:
+            tableName: user
+            columns:
+              - column:
+                  name: username
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: password
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: load_users
+      author: Gishan Pemathilake
+      changes:
+        - loadUpdateData:
+            tableName: user
+            encoding: UTF-8
+            file: users.csv
+            #            quotchar: ''''
+            relativeToChangeLogFile: true
+            separator: ','
+            usePreparedStatements: true
+            primaryKey: username
+            columns:
+              - column:
+                  name: username
+                  type: STRING
+              - column:
+                  name: password
+                  type: STRING

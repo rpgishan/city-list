@@ -5,10 +5,11 @@ import com.gish.citylist.citylistcoreapi.service.CityService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 public class CityController {
     private final CityService service;
 
-    public CityController(CityService service) {
+    public CityController(final CityService service) {
         this.service = service;
     }
 
@@ -18,17 +19,17 @@ public class CityController {
     }
 
     @PostMapping("/city")
-    public CityDTO newCity(@RequestBody CityDTO cityDTO) {
+    public CityDTO newCity(@RequestBody final CityDTO cityDTO) {
         return service.save(cityDTO);
     }
 
     @GetMapping("/city/{id}")
-    public CityDTO one(@PathVariable Long id) {
+    public CityDTO one(@PathVariable final Long id) {
         return service.findById(id);
     }
 
     @PutMapping("/city/{id}")
-    public CityDTO replaceCity(@RequestBody CityDTO newCity, @PathVariable Long id) {
+    public CityDTO replaceCity(@RequestBody final CityDTO newCity, @PathVariable final Long id) {
         return service.replaceCity(newCity, id);
     }
 }

@@ -3,24 +3,24 @@ package com.gish.citylist.citylistcoreapi.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "city")
+@Table
 public class City {
-    private @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "city_sequence_generator")
     @SequenceGenerator(name = "city_sequence_generator", sequenceName = "city_sequence", initialValue = 1001, allocationSize = 1)
-    Long id;
+    private Long id;
     private String name;
     private String photo;
 
     public City() {
     }
 
-    public City(String name, String photo) {
+    public City(final String name, final String photo) {
         this.name = name;
         this.photo = photo;
     }
 
-    public City(Long id, String name, String photo) {
+    public City(final Long id, final String name, final String photo) {
         this.id = id;
         this.name = name;
         this.photo = photo;
@@ -30,7 +30,7 @@ public class City {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -38,7 +38,7 @@ public class City {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -46,7 +46,7 @@ public class City {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(final String photo) {
         this.photo = photo;
     }
 }

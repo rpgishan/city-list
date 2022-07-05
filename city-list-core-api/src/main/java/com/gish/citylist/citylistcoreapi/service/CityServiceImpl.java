@@ -16,9 +16,12 @@ import java.util.stream.Collectors;
 public class CityServiceImpl implements CityService {
     private static final Logger logger = LoggerFactory.getLogger(CityServiceImpl.class);
 
-    @Autowired
     CityRepository repository;
 
+    @Autowired
+    public CityServiceImpl(final CityRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public List<CityDTO> findAll() {
@@ -26,13 +29,13 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public CityDTO findById(Long id) {
+    public CityDTO findById(final Long id) {
         return new CityDTO(repository.findById(id)
                 .orElseThrow(() -> new CityNotFoundException(id)));
     }
 
     @Override
-    public CityDTO save(CityDTO cityDTO) {
+    public CityDTO save(final CityDTO cityDTO) {
 //        opCoValidationService.opCoDTOValidator.validate(opCoDTO);
 //        logger.info("successfully validated opCoDTO with opco number {}", opCoDTO.getOpCoNumber());
 //        Map<String, String> duplicateOpCoFields = new HashMap<>();
@@ -54,7 +57,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public CityDTO replaceCity(CityDTO newCity, Long id) {
+    public CityDTO replaceCity(final CityDTO newCity, final Long id) {
 // TODO fix
         return repository.findById(id)
                 .map(city -> {
@@ -63,7 +66,7 @@ public class CityServiceImpl implements CityService {
                     return new CityDTO(repository.save(city));
                 })
                 .orElseGet(() -> {
-                    City city = new City(id, newCity.getName(), newCity.getPhoto());
+                    final City city = new City(id, newCity.getName(), newCity.getPhoto());
                     return new CityDTO(repository.save(city));
                 });
     }
