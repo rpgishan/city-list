@@ -1,7 +1,10 @@
 import React from 'react';
 import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
-import Home from './home';
+import CityListPage from './CityListPage/CityListPage';
 import City from './city';
+import InitialPage from "./InitialPage/InitialPage";
+import LoginPage from "./LoginPage/LoginPage";
+import CityDetailsPage from "./CityDetailsPage/CityDetailsPage";
 
 const Pages = () => {
     return (
@@ -11,9 +14,9 @@ const Pages = () => {
                     <li>
                         <Link to="/">Home</Link>
                     </li>
-                    <li>
+                 {/*   <li>
                         <Link to="/city/1">City</Link>
-                    </li>
+                    </li>*/}
                 </ul>
 
                 <hr/>
@@ -26,8 +29,10 @@ const Pages = () => {
           of them to render at a time
         */}
                 <Switch>
-                    <Route exact path="/" component={Home}/>
-                    <Route path="/city/:id" component={City}/>
+                    <Route exact path="/" component={InitialPage}/>
+                    <Route exact path="/login" component={LoginPage}/>
+                    <Route path="/city" component={CityListPage}/>
+                    <Route path="/citydetails/:id" component={CityDetailsPage}/>
                 </Switch>
             </div>
         </BrowserRouter>
