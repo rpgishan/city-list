@@ -1,7 +1,7 @@
 package com.gish.citylist.citylistcoreapi.controller;
 
-import com.gish.citylist.citylistcoreapi.dto.JwtRequestDTO;
-import com.gish.citylist.citylistcoreapi.dto.JwtResponseDTO;
+import com.gish.citylist.citylistcoreapi.dto.JwtRequest;
+import com.gish.citylist.citylistcoreapi.dto.JwtResponse;
 import com.gish.citylist.citylistcoreapi.service.JwtUserDetailsService;
 import com.gish.citylist.citylistcoreapi.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class JwtAuthenticationController {
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody final JwtRequestDTO authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody final JwtRequest authenticationRequest) throws Exception {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
@@ -40,7 +40,7 @@ public class JwtAuthenticationController {
 
         final String token = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new JwtResponseDTO(token));
+        return ResponseEntity.ok(new JwtResponse(token));
     }
 
     private void authenticate(final String username, final String password) throws Exception {

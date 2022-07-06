@@ -4,9 +4,8 @@ import com.gish.citylist.citylistcoreapi.model.City;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
-public class CityDTO implements Serializable {
+public class CityDTO extends BaseDTO {
     private Long id;
     @NotNull(message = "City Name can not be blank")
     @Length(min = 1, max = 50, message = "Length of the City Name should be between 1 to 50")

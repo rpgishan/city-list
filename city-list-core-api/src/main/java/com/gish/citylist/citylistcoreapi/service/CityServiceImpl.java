@@ -1,12 +1,17 @@
 package com.gish.citylist.citylistcoreapi.service;
 
 import com.gish.citylist.citylistcoreapi.dto.CityDTO;
+import com.gish.citylist.citylistcoreapi.dto.Response;
 import com.gish.citylist.citylistcoreapi.exceptions.CityNotFoundException;
 import com.gish.citylist.citylistcoreapi.model.City;
 import com.gish.citylist.citylistcoreapi.repository.CityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +29,29 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
+    public Long count() {
+        return repository.count();
+    }
+
+    @Override
     public List<CityDTO> findAll() {
         return repository.findAll().stream().map(CityDTO::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public Response<CityDTO> findAll(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+
+        Page<City> cityPage = repository.findAll(pageable);
+        List<CityDTO> cityDTOList = cityPage.stream().map(CityDTO::new).collect(Collectors.toList());
+        Response<CityDTO> response = new Response<>();
+        response.setContent(cityDTOList);
+        response.setPageNo(cityPage.getNumber());
+        response.setPageSize(cityPage.getSize());
+        response.setTotalElements(cityPage.getTotalElements());
+        response.setTotalPages(cityPage.getTotalPages());
+        response.setLast(cityPage.isLast());
+        return response;
     }
 
     @Override
@@ -57,7 +83,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public CityDTO replaceCity(final CityDTO newCity, final Long id) {
+    public CityDTO updateCity(final CityDTO newCity, final Long id) {
 // TODO fix
         return repository.findById(id)
                 .map(city -> {

@@ -3,11 +3,8 @@ package com.gish.citylist.citylistcoreapi.dto;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
-public class JwtRequestDTO implements Serializable {
-
-    private static final long serialVersionUID = 5926468583005150707L;
+public class JwtRequest {
 
     @NotNull(message = "Username can not be blank")
     @Length(min = 1, max = 20, message = "Length of the Username should be between 1 to 20")
@@ -17,11 +14,11 @@ public class JwtRequestDTO implements Serializable {
     private String password;
 
     //need default constructor for JSON Parsing
-    public JwtRequestDTO() {
+    public JwtRequest() {
 
     }
 
-    public JwtRequestDTO(final String username, final String password) {
+    public JwtRequest(final String username, final String password) {
         this.setUsername(username);
         this.setPassword(password);
     }

@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-public class User {
+public class User extends Base {
 
     @Id
     private String username;
