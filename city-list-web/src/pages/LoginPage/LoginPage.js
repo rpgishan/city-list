@@ -1,16 +1,14 @@
 import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {login} from "./Actions";
-import {BrowserRouter, Redirect, Route, useHistory} from "react-router-dom";
-import CityListPage from "../CityListPage/CityListPage";
-import InitialPage from "../InitialPage/InitialPage";
+import {useHistory} from "react-router-dom";
 
-const LoginPage = () => {
+const LoginPage = (setToken) => {
 
     const defaultUsername = "gishan";
     const defaultPassword = "youshallpass";
     const dispatch = useDispatch();
-    const history = useHistory()
+    // const history = useHistory()
 
     const [username, setUsername] = useState(defaultUsername);
     const [password, setPassword] = useState(defaultPassword);
@@ -30,8 +28,8 @@ const LoginPage = () => {
     const loginButtonClicked = (event) => {
         event.preventDefault();
 
-        dispatch(login(username, password));
-        history.push('/')
+        dispatch(login(username, password,setToken));
+        // history.push('/')
     };
 
 

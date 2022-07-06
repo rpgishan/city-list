@@ -9,9 +9,10 @@ import {
 const initialState = {
     isAuthenticated: false,
     token: false,
-    isFailedToLoadUserData: false,
-    retrievingToken: {
+    isFailedToLoadData: false,
+    retrievingData: {
         pending: false,
+        authenticating: false,
         success: false,
         failed: false
     }
@@ -25,18 +26,31 @@ export default (state = initialState, {type, payload} = {}) => {
             return {
                 ...state,
                 isAuthenticated: payload.isAuthenticated,
-                token: payload.token
+                token: payload.token,
+                retrievingData: {
+                    pending: false,
+                    authenticating: false,
+                    success: true,
+                    failed: false
+                }
             };
         case SET_IS_FAILED_TO_LOAD_AUTH_DATA:
             return {
                 ...state,
-                isFailedToLoadUserData: payload
+                isFailedToLoadData: payload,
+                retrievingData: {
+                    pending: false,
+                    authenticating: false,
+                    success: false,
+                    failed: false
+                }
             };
         case SET_RETRIEVING_TOKEN_SUCCESS:
             return {
                 ...state,
-                retrievingToken: {
+                retrievingData: {
                     pending: false,
+                    authenticating: true,
                     success: true,
                     failed: false
                 }
@@ -44,8 +58,9 @@ export default (state = initialState, {type, payload} = {}) => {
         case SET_RETRIEVING_TOKEN_FAILURE:
             return {
                 ...state,
-                retrievingToken: {
+                retrievingData: {
                     pending: false,
+                    authenticating: false,
                     success: false,
                     failed: true
                 }
@@ -53,8 +68,9 @@ export default (state = initialState, {type, payload} = {}) => {
         case SET_RETRIEVING_TOKEN:
             return {
                 ...state,
-                retrievingToken: {
-                    pending: payload,
+                retrievingData: {
+                    pending: payload.pending,
+                    authenticating: payload.authenticating,
                     success: false,
                     failed: false
                 }

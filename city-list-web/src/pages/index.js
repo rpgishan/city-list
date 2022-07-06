@@ -1,10 +1,8 @@
 import React from 'react';
 import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
-import CityListPage from './CityListPage/CityListPage';
-import City from './city';
 import InitialPage from "./InitialPage/InitialPage";
 import LoginPage from "./LoginPage/LoginPage";
-import CityDetailsPage from "./CityDetailsPage/CityDetailsPage";
+import CitiesPage from "./CitiesPage/CitiesPage";
 
 const Pages = () => {
     return (
@@ -31,8 +29,7 @@ const Pages = () => {
                 <Switch>
                     <Route exact path="/" component={InitialPage}/>
                     <Route exact path="/login" component={LoginPage}/>
-                    <Route path="/city" component={CityListPage}/>
-                    <Route path="/citydetails/:id" component={CityDetailsPage}/>
+                    <Route path="/city" component={CitiesPage}/>
                 </Switch>
             </div>
         </BrowserRouter>
