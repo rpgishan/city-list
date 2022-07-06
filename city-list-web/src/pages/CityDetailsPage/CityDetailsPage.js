@@ -19,7 +19,7 @@ const CityDetailsPage = (props) => {
             'Authorization': token
         },
     };
-    const url = "http://" + coreAPI.host + ":" + coreAPI.port + "/city/" + id
+    const url = "http://" + coreAPI.host + ":" + coreAPI.port + "/city/single?id=" + id
 
     useEffect(() => {
         fetch(url, requestOptions)

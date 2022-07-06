@@ -25,7 +25,7 @@ public class CityController {
         return service.count();
     }
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public List<CityDTO> all() {
         return service.findAll();
     }

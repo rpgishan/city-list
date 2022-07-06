@@ -16,7 +16,7 @@ const CityListPage = () => {
             'Authorization': token
         },
     };
-    const url = "http://" + coreAPI.host + ":" + coreAPI.port + "/city"
+    const url = "http://" + coreAPI.host + ":" + coreAPI.port + "/city/all"
     useEffect(() => {
         fetch(url, requestOptions)
             .then(res => res.json())
