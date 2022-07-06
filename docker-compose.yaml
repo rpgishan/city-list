@@ -1,7 +1,6 @@
 version: "3.9"
 services:
   db:
-#    platform: linux/x86_64
     image: mysql
     container_name: citylistmysql
     volumes:
@@ -14,3 +13,27 @@ services:
       MYSQL_DATABASE: citylist
       MYSQL_USER: citylistapp
       MYSQL_PASSWORD: appshallpass
+  coreapi:
+    image: gishan/city-list-core-api
+    container_name: citylistcoreapi
+    ports:
+      - 8082:8082
+    depends_on:
+      - db
+    restart: unless-stopped
+    environment:
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+      MYSQL_USER: citylistapp
+      MYSQL_PASSWORD: appshallpass
+  web:
+    image: gishan/city-list-web
+    container_name: citylistweb
+    ports:
+      - 3000:3000
+    depends_on:
+      - coreapi
+    restart: unless-stopped
+    environment:
+      CORE_API_HOST: coreapi
+      CORE_API_PORT: 8082
