@@ -61,6 +61,27 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
+    public List<CityDTO> findByName(String name) {
+        return repository.findByName(name).stream().map(CityDTO::new).collect(Collectors.toList());
+    }
+
+//    @Override
+//    public Response<CityDTO> findByName(String name, int pageNo, int pageSize) {
+//        Pageable pageable = PageRequest.of(pageNo,pageSize);
+//
+//        Page<City> cityPage = repository.findByName(name,pageable);
+//        List<CityDTO> cityDTOList = cityPage.stream().map(CityDTO::new).collect(Collectors.toList());
+//        Response<CityDTO> response = new Response<>();
+//        response.setContent(cityDTOList);
+//        response.setPageNo(cityPage.getNumber());
+//        response.setPageSize(cityPage.getSize());
+//        response.setTotalElements(cityPage.getTotalElements());
+//        response.setTotalPages(cityPage.getTotalPages());
+//        response.setLast(cityPage.isLast());
+//        return response;
+//    }
+
+    @Override
     public CityDTO save(final CityDTO cityDTO) {
 //        opCoValidationService.opCoDTOValidator.validate(opCoDTO);
 //        logger.info("successfully validated opCoDTO with opco number {}", opCoDTO.getOpCoNumber());

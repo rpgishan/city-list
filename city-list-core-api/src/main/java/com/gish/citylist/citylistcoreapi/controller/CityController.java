@@ -37,6 +37,19 @@ public class CityController {
         return service.findAll(pageNo, pageSize);
     }
 
+    @GetMapping("/name")
+    public List<CityDTO> name(@RequestParam String name) {
+        return service.findByName(name);
+    }
+
+//    @GetMapping("/namepage")
+//    public Response<CityDTO> namepage(
+//            @RequestParam String name,
+//            @RequestParam(defaultValue = DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+//            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, required = false) int pageSize) {
+//        return service.findByName(name, pageNo, pageSize);
+//    }
+
     @PostMapping("/new")
     public CityDTO newCity(@RequestBody final CityDTO cityDTO) {
         return service.save(cityDTO);

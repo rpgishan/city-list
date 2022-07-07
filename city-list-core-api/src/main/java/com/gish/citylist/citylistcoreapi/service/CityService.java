@@ -14,6 +14,10 @@ public interface CityService {
 
     CityDTO findById(Long id);
 
+    List<CityDTO> findByName(String name);
+
+//    Response<CityDTO> findByName(String name, int pageNo, int pageSize);
+
     CityDTO save(CityDTO cityDTO);
 
     CityDTO updateCity(CityDTO newCity, Long id);
