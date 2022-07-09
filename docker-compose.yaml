@@ -4,7 +4,8 @@ services:
     image: mysql
     container_name: citylistmysql
     volumes:
-      - ./city-list-database/mysql:/var/lib/mysql
+#      - ./city-list-database/mysql:/var/lib/mysql
+      - mysql-store:/var/lib/mysql
     ports:
       - 3307:3306
     restart: unless-stopped
@@ -14,6 +15,8 @@ services:
       MYSQL_USER: citylistapp
       MYSQL_PASSWORD: appshallpass
   coreapi:
+    build:
+      context: city-list-core-api
     image: gishan/city-list-core-api
     container_name: citylistcoreapi
     ports:
@@ -27,6 +30,8 @@ services:
       MYSQL_USER: citylistapp
       MYSQL_PASSWORD: appshallpass
   web:
+    build:
+      context: city-list-web
     image: gishan/city-list-web
     container_name: citylistweb
     ports:
@@ -37,3 +42,5 @@ services:
     environment:
       CORE_API_HOST: coreapi
       CORE_API_PORT: 8082
+volumes:
+  mysql-store:
