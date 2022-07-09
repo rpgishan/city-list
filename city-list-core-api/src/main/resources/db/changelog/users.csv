@@ -1,2 +1,5 @@
-username,password
-gishan,$2a$10$44FyrsaJaMFtWa1qgzxUi.PVM3rotsRhUqXVEItWTLZ262lBu1mJS
+user_id,username,password,enabled
+1,admin,$2a$10$44FyrsaJaMFtWa1qgzxUi.PVM3rotsRhUqXVEItWTLZ262lBu1mJS,true
+2,editor,$2a$10$44FyrsaJaMFtWa1qgzxUi.PVM3rotsRhUqXVEItWTLZ262lBu1mJS,true
+3,user,$2a$10$44FyrsaJaMFtWa1qgzxUi.PVM3rotsRhUqXVEItWTLZ262lBu1mJS,true
+4,gishan,$2a$10$44FyrsaJaMFtWa1qgzxUi.PVM3rotsRhUqXVEItWTLZ262lBu1mJS,true

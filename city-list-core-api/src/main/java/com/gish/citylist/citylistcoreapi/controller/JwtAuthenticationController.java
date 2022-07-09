@@ -2,7 +2,7 @@ package com.gish.citylist.citylistcoreapi.controller;
 
 import com.gish.citylist.citylistcoreapi.dto.JwtRequest;
 import com.gish.citylist.citylistcoreapi.dto.JwtResponse;
-import com.gish.citylist.citylistcoreapi.service.JwtUserDetailsService;
+import com.gish.citylist.citylistcoreapi.service.UserDetailsServiceImpl;
 import com.gish.citylist.citylistcoreapi.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
@@ -21,10 +25,10 @@ public class JwtAuthenticationController {
 
     private JwtTokenUtil jwtTokenUtil;
 
-    private JwtUserDetailsService userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public JwtAuthenticationController(final AuthenticationManager authenticationManager, final JwtTokenUtil jwtTokenUtil, final JwtUserDetailsService userDetailsService) {
+    public JwtAuthenticationController(final AuthenticationManager authenticationManager, final JwtTokenUtil jwtTokenUtil, final UserDetailsServiceImpl userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
         this.userDetailsService = userDetailsService;

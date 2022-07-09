@@ -1,6 +1,11 @@
 package com.gish.citylist.citylistcoreapi.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
 @Table
@@ -9,7 +14,9 @@ public class City extends Base {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "city_sequence_generator")
     @SequenceGenerator(name = "city_sequence_generator", sequenceName = "city_sequence", initialValue = 1001, allocationSize = 1)
     private Long id;
+
     private String name;
+
     private String photo;
 
     public City() {

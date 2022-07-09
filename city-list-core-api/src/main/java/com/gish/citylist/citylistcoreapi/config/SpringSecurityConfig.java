@@ -23,14 +23,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    private UserDetailsService jwtUserDetailsService;
+    private UserDetailsService userDetailsService;
 
     private JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    public SpringSecurityConfig(final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, final UserDetailsService jwtUserDetailsService, final JwtRequestFilter jwtRequestFilter) {
+    public SpringSecurityConfig(final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, final UserDetailsService userDetailsService, final JwtRequestFilter jwtRequestFilter) {
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-        this.jwtUserDetailsService = jwtUserDetailsService;
+        this.userDetailsService = userDetailsService;
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
@@ -39,10 +39,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         // configure AuthenticationManager so that it knows from where to load
         // user for matching credentials
         // Use BCryptPasswordEncoder
-        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
-//        @Bean //TODO check why bean is not working
+    //        @Bean //TODO check why bean is not working
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -55,18 +55,19 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity httpSecurity) throws Exception {
-        // We don't need CSRF for this example
-        httpSecurity.cors().and().csrf().disable()
-                // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/authenticate").permitAll().
-                // all other requests need to be authenticated
-                        anyRequest().authenticated().and().
-                // make sure we use stateless session; session won't be used to
-                // store user's state.
-                        exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+        httpSecurity
+                .cors().and().csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/authenticate").permitAll()
+                .antMatchers("/**/update").hasAnyAuthority("ROLE_ADMIN","ROLE_EDIT")
+                .antMatchers("/**/new").hasAnyAuthority("ROLE_ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and()
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

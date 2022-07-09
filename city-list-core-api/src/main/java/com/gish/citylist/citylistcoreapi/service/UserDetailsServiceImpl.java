@@ -1,33 +1,30 @@
 package com.gish.citylist.citylistcoreapi.service;
 
-import com.gish.citylist.citylistcoreapi.exceptions.UserNotFoundException;
+import com.gish.citylist.citylistcoreapi.model.User;
+import com.gish.citylist.citylistcoreapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-
 @Service
-public class JwtUserDetailsService implements UserDetailsService {
-    UserService userService;
+public class UserDetailsServiceImpl implements UserDetailsService {
+    private final UserRepository userRepository;
 
     @Autowired
-    public JwtUserDetailsService(final UserService userService) {
-        this.userService = userService;
+    public UserDetailsServiceImpl(final UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 
-        final com.gish.citylist.citylistcoreapi.model.User user;
-        try {
-            user = userService.findById(username);
-            return new User(user.getUsername(), user.getPassword(), new ArrayList<>());
-        } catch (UserNotFoundException e) {
+        final User user = userRepository.findByUsername(username);
+        if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
+
+        return new AppUserDetails(user);
     }
 }

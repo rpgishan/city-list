@@ -54,14 +54,25 @@ databaseChangeLog:
             tableName: user
             columns:
               - column:
-                  name: username
-                  type: VARCHAR(20)
+                  name: user_id
+                  type: BIGINT
                   constraints:
                     nullable: false
                     primaryKey: true
               - column:
+                  name: username
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
                   name: password
                   type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: enabled
+                  type: BOOLEAN
+                  valueBoolean: true
                   constraints:
                     nullable: false
 
@@ -77,11 +88,103 @@ databaseChangeLog:
             relativeToChangeLogFile: true
             separator: ','
             usePreparedStatements: true
-            primaryKey: username
+            primaryKey: user_id
             columns:
+              - column:
+                  name: user_id
+                  type: NUMERIC
               - column:
                   name: username
                   type: STRING
               - column:
                   name: password
                   type: STRING
+              - column:
+                  name: enabled
+                  type: BOOLEAN
+  - changeSet:
+      id: create_role_table
+      author: Gishan Pemathilake
+      changes:
+        - createTable:
+            tableName: role
+            columns:
+              - column:
+                  name: role_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: load_roles
+      author: Gishan Pemathilake
+      changes:
+        - loadUpdateData:
+            tableName: role
+            encoding: UTF-8
+            file: roles.csv
+            relativeToChangeLogFile: true
+            separator: ','
+            usePreparedStatements: true
+            primaryKey: role_id
+            columns:
+              - column:
+                  name: role_id
+                  type: NUMERIC
+              - column:
+                  name: name
+                  type: STRING
+  - changeSet:
+      id: create_users_roles_table
+      author: Gishan Pemathilake
+      changes:
+        - createTable:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: add_primary_key_users_roles_table
+      author: Gishan Pemathilake
+      changes:
+        - addPrimaryKey:
+            columnNames: user_id, role_id
+            constraintName: pk_users_roles
+            tableName: users_roles
+            validate: true
+
+  - changeSet:
+      id: load_users_roles
+      author: Gishan Pemathilake
+      changes:
+        - loadUpdateData:
+            tableName: users_roles
+            encoding: UTF-8
+            file: users_roles.csv
+            relativeToChangeLogFile: true
+            separator: ','
+            usePreparedStatements: true
+            primaryKey: user_id,role_id
+            columns:
+              - column:
+                  name: user_id
+                  type: NUMERIC
+              - column:
+                  name: role_id
+                  type: NUMERIC
+

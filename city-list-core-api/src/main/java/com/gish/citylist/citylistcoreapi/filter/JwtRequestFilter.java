@@ -1,6 +1,6 @@
 package com.gish.citylist.citylistcoreapi.filter;
 
-import com.gish.citylist.citylistcoreapi.service.JwtUserDetailsService;
+import com.gish.citylist.citylistcoreapi.service.UserDetailsServiceImpl;
 import com.gish.citylist.citylistcoreapi.util.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +20,13 @@ import java.io.IOException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    private final JwtUserDetailsService jwtUserDetailsService;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
 
     private final JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    public JwtRequestFilter(final JwtUserDetailsService jwtUserDetailsService, final JwtTokenUtil jwtTokenUtil) {
-        this.jwtUserDetailsService = jwtUserDetailsService;
+    public JwtRequestFilter(final UserDetailsServiceImpl userDetailsServiceImpl, final JwtTokenUtil jwtTokenUtil) {
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
@@ -56,7 +56,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         // Once we get the token validate it.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            final UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
+            final UserDetails userDetails = this.userDetailsServiceImpl.loadUserByUsername(username);
 
             // if token is valid configure Spring Security to manually set
             // authentication
