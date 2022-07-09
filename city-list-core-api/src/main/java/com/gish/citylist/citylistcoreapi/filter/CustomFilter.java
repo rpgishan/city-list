@@ -11,7 +11,9 @@ import java.io.IOException;
 public class CustomFilter extends GenericFilterBean {
 
     @Override
-    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
+    public void doFilter(final ServletRequest request,
+                         final ServletResponse response,
+                         final FilterChain chain) throws IOException, ServletException {
         chain.doFilter(request, response);
     }
 

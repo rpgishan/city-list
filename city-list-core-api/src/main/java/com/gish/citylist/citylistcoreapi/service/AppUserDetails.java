@@ -13,18 +13,18 @@ import java.util.Set;
 
 public class AppUserDetails implements UserDetails {
 
-    private User user;
+    private final User user;
 
-    public AppUserDetails(User user) {
+    public AppUserDetails(final User user) {
         this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Role> roles = user.getRoles();
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        final Set<Role> roles = user.getRoles();
+        final List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-        for (Role role : roles) {
+        for (final Role role : roles) {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
 

@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class CityServiceImpl implements CityService {
     private static final Logger logger = LoggerFactory.getLogger(CityServiceImpl.class);
 
-    CityRepository repository;
+    private final CityRepository repository;
 
     @Autowired
     public CityServiceImpl(final CityRepository repository) {
@@ -38,12 +38,12 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public Response<CityDTO> findAll(int pageNo, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNo,pageSize);
+    public Response<CityDTO> findAll(final int pageNo, final int pageSize) {
+        final Pageable pageable = PageRequest.of(pageNo, pageSize);
 
-        Page<City> cityPage = repository.findAll(pageable);
-        List<CityDTO> cityDTOList = cityPage.stream().map(CityDTO::new).collect(Collectors.toList());
-        Response<CityDTO> response = new Response<>();
+        final Page<City> cityPage = repository.findAll(pageable);
+        final List<CityDTO> cityDTOList = cityPage.stream().map(CityDTO::new).collect(Collectors.toList());
+        final Response<CityDTO> response = new Response<>();
         response.setContent(cityDTOList);
         response.setPageNo(cityPage.getNumber());
         response.setPageSize(cityPage.getSize());
@@ -56,29 +56,29 @@ public class CityServiceImpl implements CityService {
     @Override
     public CityDTO findById(final Long id) {
         return new CityDTO(repository.findById(id)
-                .orElseThrow(() -> new CityNotFoundException(id)));
+                                     .orElseThrow(() -> new CityNotFoundException(id)));
     }
 
     @Override
-    public List<CityDTO> findByName(String name) {
+    public List<CityDTO> findByName(final String name) {
         return repository.findByName(name).stream().map(CityDTO::new).collect(Collectors.toList());
     }
 
-//    @Override
-//    public Response<CityDTO> findByName(String name, int pageNo, int pageSize) {
-//        Pageable pageable = PageRequest.of(pageNo,pageSize);
-//
-//        Page<City> cityPage = repository.findByName(name,pageable);
-//        List<CityDTO> cityDTOList = cityPage.stream().map(CityDTO::new).collect(Collectors.toList());
-//        Response<CityDTO> response = new Response<>();
-//        response.setContent(cityDTOList);
-//        response.setPageNo(cityPage.getNumber());
-//        response.setPageSize(cityPage.getSize());
-//        response.setTotalElements(cityPage.getTotalElements());
-//        response.setTotalPages(cityPage.getTotalPages());
-//        response.setLast(cityPage.isLast());
-//        return response;
-//    }
+    @Override
+    public Response<CityDTO> findByName(String name, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+
+        Page<City> cityPage = repository.findByNamePage(name,pageable);
+        List<CityDTO> cityDTOList = cityPage.stream().map(CityDTO::new).collect(Collectors.toList());
+        Response<CityDTO> response = new Response<>();
+        response.setContent(cityDTOList);
+        response.setPageNo(cityPage.getNumber());
+        response.setPageSize(cityPage.getSize());
+        response.setTotalElements(cityPage.getTotalElements());
+        response.setTotalPages(cityPage.getTotalPages());
+        response.setLast(cityPage.isLast());
+        return response;
+    }
 
     @Override
     public CityDTO save(final CityDTO cityDTO) {
@@ -106,14 +106,14 @@ public class CityServiceImpl implements CityService {
     public CityDTO updateCity(final CityDTO newCity, final Long id) {
 // TODO fix
         return repository.findById(id)
-                .map(city -> {
-                    city.setName(newCity.getName());
-                    city.setPhoto(newCity.getPhoto());
-                    return new CityDTO(repository.save(city));
-                })
-                .orElseGet(() -> {
-                    final City city = new City(id, newCity.getName(), newCity.getPhoto());
-                    return new CityDTO(repository.save(city));
-                });
+                         .map(city -> {
+                             city.setName(newCity.getName());
+                             city.setPhoto(newCity.getPhoto());
+                             return new CityDTO(repository.save(city));
+                         })
+                         .orElseGet(() -> {
+                             final City city = new City(id, newCity.getName(), newCity.getPhoto());
+                             return new CityDTO(repository.save(city));
+                         });
     }
 }

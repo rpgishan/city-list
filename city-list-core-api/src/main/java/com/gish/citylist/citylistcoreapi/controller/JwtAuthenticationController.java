@@ -21,21 +21,24 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 public class JwtAuthenticationController {
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    private JwtTokenUtil jwtTokenUtil;
+    private final JwtTokenUtil jwtTokenUtil;
 
-    private UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public JwtAuthenticationController(final AuthenticationManager authenticationManager, final JwtTokenUtil jwtTokenUtil, final UserDetailsServiceImpl userDetailsService) {
+    public JwtAuthenticationController(final AuthenticationManager authenticationManager,
+                                       final JwtTokenUtil jwtTokenUtil,
+                                       final UserDetailsServiceImpl userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
         this.userDetailsService = userDetailsService;
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody final JwtRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody final JwtRequest authenticationRequest) throws
+                                                                                                            Exception {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 

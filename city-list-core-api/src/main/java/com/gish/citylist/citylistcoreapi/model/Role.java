@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-public class Role extends Base{
+public class Role extends Base {
     @Id
     @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class Role extends Base{
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -29,7 +29,7 @@ public class Role extends Base{
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 }

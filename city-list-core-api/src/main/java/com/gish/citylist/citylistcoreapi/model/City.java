@@ -12,7 +12,10 @@ import javax.persistence.Table;
 public class City extends Base {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "city_sequence_generator")
-    @SequenceGenerator(name = "city_sequence_generator", sequenceName = "city_sequence", initialValue = 1001, allocationSize = 1)
+    @SequenceGenerator(name = "city_sequence_generator",
+                       sequenceName = "city_sequence",
+                       initialValue = 1001,
+                       allocationSize = 1)
     private Long id;
 
     private String name;

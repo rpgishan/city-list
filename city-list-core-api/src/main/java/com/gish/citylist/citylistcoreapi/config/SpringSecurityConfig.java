@@ -21,14 +21,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    private JwtRequestFilter jwtRequestFilter;
+    private final JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    public SpringSecurityConfig(final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, final UserDetailsService userDetailsService, final JwtRequestFilter jwtRequestFilter) {
+    public SpringSecurityConfig(final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+                                final UserDetailsService userDetailsService,
+                                final JwtRequestFilter jwtRequestFilter) {
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.userDetailsService = userDetailsService;
         this.jwtRequestFilter = jwtRequestFilter;
@@ -59,7 +61,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/authenticate").permitAll()
-                .antMatchers("/**/update").hasAnyAuthority("ROLE_ADMIN","ROLE_EDIT")
+                .antMatchers("/**/update").hasAnyAuthority("ROLE_ADMIN", "ROLE_ALLOW_EDIT")
                 .antMatchers("/**/new").hasAnyAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()

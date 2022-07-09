@@ -16,7 +16,7 @@ public interface CityService {
 
     List<CityDTO> findByName(String name);
 
-//    Response<CityDTO> findByName(String name, int pageNo, int pageSize);
+    Response<CityDTO> findByName(String name, int pageNo, int pageSize);
 
     CityDTO save(CityDTO cityDTO);
 

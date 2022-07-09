@@ -23,7 +23,7 @@ public class CityDTO extends BaseDTO {
         this.photo = photo;
     }
 
-    public CityDTO(Long id, String name, String photo) {
+    public CityDTO(final Long id, final String name, final String photo) {
         this.id = id;
         this.name = name;
         this.photo = photo;
@@ -39,7 +39,7 @@ public class CityDTO extends BaseDTO {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 

@@ -13,7 +13,7 @@ public class Response<T extends BaseDTO> {
     public Response() {
     }
 
-    public Response(List<T> content, int pageNo, int pageSize, long totalElements, int totalPages, boolean last) {
+    public Response(final List<T> content, final int pageNo, final int pageSize, final long totalElements, final int totalPages, final boolean last) {
         this.content = content;
         this.pageNo = pageNo;
         this.pageSize = pageSize;
@@ -26,7 +26,7 @@ public class Response<T extends BaseDTO> {
         return content;
     }
 
-    public void setContent(List<T> content) {
+    public void setContent(final List<T> content) {
         this.content = content;
     }
 
@@ -34,7 +34,7 @@ public class Response<T extends BaseDTO> {
         return pageNo;
     }
 
-    public void setPageNo(int pageNo) {
+    public void setPageNo(final int pageNo) {
         this.pageNo = pageNo;
     }
 
@@ -42,7 +42,7 @@ public class Response<T extends BaseDTO> {
         return pageSize;
     }
 
-    public void setPageSize(int pageSize) {
+    public void setPageSize(final int pageSize) {
         this.pageSize = pageSize;
     }
 
@@ -50,7 +50,7 @@ public class Response<T extends BaseDTO> {
         return totalElements;
     }
 
-    public void setTotalElements(long totalElements) {
+    public void setTotalElements(final long totalElements) {
         this.totalElements = totalElements;
     }
 
@@ -58,7 +58,7 @@ public class Response<T extends BaseDTO> {
         return totalPages;
     }
 
-    public void setTotalPages(int totalPages) {
+    public void setTotalPages(final int totalPages) {
         this.totalPages = totalPages;
     }
 
@@ -66,7 +66,7 @@ public class Response<T extends BaseDTO> {
         return last;
     }
 
-    public void setLast(boolean last) {
+    public void setLast(final boolean last) {
         this.last = last;
     }
 }

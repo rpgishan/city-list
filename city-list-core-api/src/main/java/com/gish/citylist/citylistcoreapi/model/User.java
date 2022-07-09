@@ -22,7 +22,10 @@ public class User extends Base {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence_generator")
-    @SequenceGenerator(name = "user_sequence_generator", sequenceName = "user_sequence", initialValue = 5, allocationSize = 1)
+    @SequenceGenerator(name = "user_sequence_generator",
+                       sequenceName = "user_sequence",
+                       initialValue = 5,
+                       allocationSize = 1)
     private Long id;
 
     private String username;
@@ -43,7 +46,7 @@ public class User extends Base {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -67,7 +70,7 @@ public class User extends Base {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(final Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -75,7 +78,7 @@ public class User extends Base {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(final boolean enabled) {
         this.enabled = enabled;
     }
 }
