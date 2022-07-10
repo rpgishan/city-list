@@ -4,18 +4,19 @@ import LoginPage from "../LoginPage/LoginPage";
 import { loadCitiesPage } from "../CitiesPage/Actions";
 import { useToken } from "../../common/useToken";
 import CitiesPage from "../CitiesPage/CitiesPage";
-import { initiateLogin, initiateLogout } from "./Actions";
+import { initiateLogin, initiateLogout, verifyToken } from "./Actions";
 
 const InitialPage = () => {
   const dispatch = useDispatch();
   const { token, saveToken, removeToken } = useToken();
 
   const citiesPage = useSelector((state) => state.citiesPage.citiesPage);
+  const isAuthenticated = useSelector(
+    (state) => state.initialPage.isAuthenticated
+  );
   const isFailedToLoadCityData = useSelector(
     (state) => state.citiesPage.isFailedToLoadData
   );
-
-  const isValidToken = `${token}`.startsWith("Bearer ");
 
   const login = (username, password) => {
     dispatch(initiateLogin(username, password, saveToken));
@@ -23,12 +24,16 @@ const InitialPage = () => {
 
   const logout = () => {
     removeToken();
-    if (isValidToken) {
+    if (isAuthenticated) {
       dispatch(initiateLogout());
     }
   };
 
-  if (isValidToken) {
+  if (token) {
+    dispatch(verifyToken(token, removeToken));
+  }
+
+  if (isAuthenticated) {
     if (!citiesPage.content) {
       loadNewPage(dispatch, token, 0);
     }

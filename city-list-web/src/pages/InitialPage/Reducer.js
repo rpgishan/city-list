@@ -8,6 +8,10 @@ import {
   SET_RETRIEVING_TOKEN,
   SET_RETRIEVING_TOKEN_FAILURE,
   SET_RETRIEVING_TOKEN_SUCCESS,
+  SET_VALID_TOKEN,
+  SET_VALIDATING_TOKEN,
+  SET_VALIDATING_TOKEN_FAILURE,
+  SET_VALIDATING_TOKEN_SUCCESS,
 } from "./ActionTypes";
 
 const initialState = {
@@ -31,6 +35,7 @@ export default (state = initialState, { type, payload } = {}) => {
   /* eslint-disable */
   switch (type) {
     case SET_AUTH_DATA:
+    case SET_VALID_TOKEN:
       return {
         ...state,
         isAuthenticated: payload,
@@ -53,6 +58,7 @@ export default (state = initialState, { type, payload } = {}) => {
         },
       };
     case SET_RETRIEVING_TOKEN_SUCCESS:
+    case SET_VALIDATING_TOKEN_SUCCESS:
       return {
         ...state,
         retrievingData: {
@@ -63,6 +69,7 @@ export default (state = initialState, { type, payload } = {}) => {
         },
       };
     case SET_RETRIEVING_TOKEN_FAILURE:
+    case SET_VALIDATING_TOKEN_FAILURE:
       return {
         ...state,
         retrievingData: {
@@ -73,6 +80,7 @@ export default (state = initialState, { type, payload } = {}) => {
         },
       };
     case SET_RETRIEVING_TOKEN:
+    case SET_VALIDATING_TOKEN:
       return {
         ...state,
         retrievingData: {

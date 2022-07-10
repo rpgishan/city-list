@@ -42,7 +42,10 @@ const CityItem = ({ city, buttonClicked }) => {
   return (
     <div>
       <p>
-        <Button variant="outline-primary" onClick={(event) => buttonClicked(event, city)}>
+        <Button
+          variant="outline-primary"
+          onClick={(event) => buttonClicked(event, city)}
+        >
           <Figure>
             <FigureImage
               src={city.photo}

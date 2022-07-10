@@ -41,15 +41,13 @@ const CitiesSearchBar = ({
         value={name}
         onChange={handleNameChange}
       />
-      <p>
-        <Button value="Search" disabled={isSearchDisabled} onClick={onSearch}>
-          Search
-        </Button>
-        <span> </span>
-        <Button disabled={isClearDisabled} onClick={onClear}>
-          Clear
-        </Button>
-      </p>
+      <Button value="Search" disabled={isSearchDisabled} onClick={onSearch}>
+        Search
+      </Button>
+      <span> </span>
+      <Button disabled={isClearDisabled} onClick={onClear}>
+        Clear
+      </Button>
     </div>
   );
 };

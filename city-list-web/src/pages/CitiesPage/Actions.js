@@ -15,6 +15,8 @@ import {
 } from "./ActionTypes";
 import axios from "axios";
 import { apiBaseURL } from "../../common/constants";
+import { REMOVE_AUTH_DATA } from "../InitialPage/ActionTypes";
+import { StatusCodes } from "http-status-codes";
 
 export const loadCitiesPage = (token, pageNo = 0) => {
   const pageSize = 10;
@@ -34,19 +36,29 @@ export const loadCitiesPage = (token, pageNo = 0) => {
         .then((response) => {
           dispatch({ type: SET_RETRIEVING_CITIES_SUCCESS, payload: true });
           const receivedData = response.data;
+          const status = response.status;
           let page;
-          if (receivedData) {
+          if (status === StatusCodes.OK && receivedData) {
             page = response.data;
+          } else if (status === StatusCodes.UNAUTHORIZED) {
+            dispatch({ type: REMOVE_AUTH_DATA });
           } else {
             page = {};
           }
           dispatch(setCitiesPageData(page));
           dispatch(setIsFailedToLoadData(false));
         })
-        .catch(() => {
-          dispatch({ type: SET_RETRIEVING_CITIES_FAILURE, payload: true });
-          dispatch(setCitiesPageData({}));
-          dispatch(setIsFailedToLoadData(true));
+        .catch((error) => {
+          const status = error.response.status;
+          if (status === StatusCodes.UNAUTHORIZED) {
+            dispatch({ type: REMOVE_AUTH_DATA });
+          } else if (status === StatusCodes.FORBIDDEN) {
+            alert("The user is not authorized to perform this action");
+          } else {
+            dispatch({ type: SET_RETRIEVING_CITIES_FAILURE, payload: true });
+            dispatch(setCitiesPageData({}));
+            dispatch(setIsFailedToLoadData(true));
+          }
         })
         .finally(() => {
           dispatch({ type: SET_RETRIEVING_CITIES_DATA, payload: false });
@@ -72,19 +84,29 @@ export const loadCitiesByName = (token, name) => {
         .then((response) => {
           dispatch({ type: SET_RETRIEVING_CITIES_SUCCESS, payload: true });
           const receivedData = response.data;
+          const status = response.status;
           let cities;
-          if (receivedData) {
+          if (status === StatusCodes.OK && receivedData) {
             cities = response.data;
+          } else if (status === StatusCodes.UNAUTHORIZED) {
+            dispatch({ type: REMOVE_AUTH_DATA });
           } else {
             cities = {};
           }
           dispatch(setCitiesData(cities));
           dispatch(setIsFailedToLoadData(false));
         })
-        .catch(() => {
-          dispatch({ type: SET_RETRIEVING_CITIES_FAILURE, payload: true });
-          dispatch(setCitiesData([]));
-          dispatch(setIsFailedToLoadData(true));
+        .catch((error) => {
+          const status = error.response.status;
+          if (status === StatusCodes.UNAUTHORIZED) {
+            dispatch({ type: REMOVE_AUTH_DATA });
+          } else if (status === StatusCodes.FORBIDDEN) {
+            alert("The user is not authorized to perform this action");
+          } else {
+            dispatch({ type: SET_RETRIEVING_CITIES_FAILURE, payload: true });
+            dispatch(setCitiesData([]));
+            dispatch(setIsFailedToLoadData(true));
+          }
         })
         .finally(() => {
           dispatch({ type: SET_RETRIEVING_CITIES_DATA, payload: false });
@@ -111,18 +133,28 @@ export const updateCity = (token, city, citiesPage) => {
         .then((response) => {
           dispatch({ type: SET_SELECTED_CITY_UPDATE_SUCCESS, payload: true });
           const receivedData = response.data;
+          const status = response.status;
           let resCity;
-          if (receivedData) {
+          if (status === StatusCodes.OK && receivedData) {
             resCity = response.data;
+          } else if (status === StatusCodes.UNAUTHORIZED) {
+            dispatch({ type: REMOVE_AUTH_DATA });
           } else {
             resCity = {};
           }
-          dispatch(setSeletedCityUpdated(resCity));
+          dispatch(setSelectedCityUpdated(resCity));
           dispatch(setIsFailedToUpdateData(false));
         })
-        .catch(() => {
-          dispatch(setSeletedCityUpdated({}));
-          dispatch(setIsFailedToUpdateData(true));
+        .catch((error) => {
+          const status = error.response.status;
+          if (status === StatusCodes.UNAUTHORIZED) {
+            dispatch({ type: REMOVE_AUTH_DATA });
+          } else if (status === StatusCodes.FORBIDDEN) {
+            alert("The user is not authorized to perform this action");
+          } else {
+            dispatch(setSelectedCityUpdated({}));
+            dispatch(setIsFailedToUpdateData(true));
+          }
         })
         .finally(() => {
           dispatch({ type: SET_SELECTED_CITY_UPDATING, payload: false });
