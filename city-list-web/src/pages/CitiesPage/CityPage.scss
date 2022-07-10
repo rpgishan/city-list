@@ -1,7 +1,7 @@
 /* Split the screen in half */
 .splitLeft {
   height: 100%;
-  width: 40%;
+  width: 25%;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -13,7 +13,7 @@
 
 .splitRight {
   height: 100%;
-  width: 60%;
+  width: 75%;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -23,36 +23,11 @@
   background-color: #ffeeee;
 }
 
-.absoluteright {
+.absoluteRight {
   position: absolute;
   right: 2%;
 }
 
-.centered {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.textCentered {
   text-align: center;
-}
-
-.listPanel {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -35%);
-  text-align: center;
-}
-
-.topCentered {
-  position: absolute;
-  top: 5%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.centered img {
-  max-height: 800px;
-  max-width: 1000px;
 }

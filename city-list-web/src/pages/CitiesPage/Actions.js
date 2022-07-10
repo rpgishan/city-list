@@ -110,7 +110,6 @@ export const updateCity = (token, city, citiesPage) => {
         .put(url, city, params)
         .then((response) => {
           dispatch({ type: SET_SELECTED_CITY_UPDATE_SUCCESS, payload: true });
-          console.log(response);
           const receivedData = response.data;
           let resCity;
           if (receivedData) {

@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
+import FormControl from "react-bootstrap/FormControl";
 
 const CityDetails = ({ city, isEditMode, updateSelectedCity, setEditMode }) => {
   const id = city.id;
@@ -67,9 +70,7 @@ const CityDetails = ({ city, isEditMode, updateSelectedCity, setEditMode }) => {
         />
       );
     } else {
-      return (
-        <ViewMode id={id} name={city.name} photo={city.photo} onEdit={onEdit} />
-      );
+      return <ViewMode name={city.name} photo={city.photo} onEdit={onEdit} />;
     }
   } else {
     return <div>Please select a city</div>;
@@ -77,7 +78,6 @@ const CityDetails = ({ city, isEditMode, updateSelectedCity, setEditMode }) => {
 };
 
 const EditMode = ({
-  id,
   cityName,
   cityPhoto,
   newName,
@@ -91,41 +91,43 @@ const EditMode = ({
 
   return (
     <div>
-      <h1>{id}</h1>
       <p>
-        <input
+        <FormControl
           type="text"
           value={newName}
+          placeholder="City Name"
+          size={"lg"}
           maxLength={20}
           onChange={handleNameChange}
         />
       </p>
       <p>
-        <textarea value={newPhoto} rows={5} onChange={handlePhotoChange} />
+        <textarea
+          value={newPhoto}
+          cols={80}
+          rows={5}
+          onChange={handlePhotoChange}
+        />
       </p>
       <p>
-        <input
-          type="button"
-          value="save"
-          disabled={saveDisabled}
-          onClick={onSave}
-        />
-        <input type="button" value="Cancel" onClick={onCancel} />
+        <Button disabled={saveDisabled} onClick={onSave}>
+          Save
+        </Button>
+        <span> </span>
+        <Button onClick={onCancel}>Cancel</Button>
       </p>
       <ImageView src={cityPhoto} alt={cityName} />
     </div>
   );
 };
 
-const ViewMode = ({ id, name, photo, onEdit }) => {
+const ViewMode = ({ name, photo, onEdit }) => {
   return (
     <div>
-      <h1>
-        {id} - {name}
-      </h1>
+      <h1>{name}</h1>
       <span>{photo}</span>
       <p>
-        <input type="button" value="edit" onClick={onEdit} />
+        <Button onClick={onEdit}> Edit </Button>
       </p>
       <ImageView src={photo} alt={name} />
     </div>
@@ -135,7 +137,7 @@ const ViewMode = ({ id, name, photo, onEdit }) => {
 const ImageView = ({ src, alt }) => {
   return (
     <p>
-      <img src={src} alt={alt} />
+      <Image src={src} alt={alt} fluid={true} />
     </p>
   );
 };

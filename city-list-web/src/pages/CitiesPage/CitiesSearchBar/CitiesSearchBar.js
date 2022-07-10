@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Button from "react-bootstrap/Button";
+import FormControl from "react-bootstrap/FormControl";
 
 const CitiesSearchBar = ({
   isNameSearch,
@@ -33,19 +35,21 @@ const CitiesSearchBar = ({
 
   return (
     <div>
-      <input type="text" value={name} onChange={handleNameChange} />
-      <input
-        type="button"
-        value="Search"
-        disabled={isSearchDisabled}
-        onClick={onSearch}
+      <FormControl
+        type="text"
+        size={"lg"}
+        value={name}
+        onChange={handleNameChange}
       />
-      <input
-        type="button"
-        value="Clear"
-        disabled={isClearDisabled}
-        onClick={onClear}
-      />
+      <p>
+        <Button value="Search" disabled={isSearchDisabled} onClick={onSearch}>
+          Search
+        </Button>
+        <span> </span>
+        <Button disabled={isClearDisabled} onClick={onClear}>
+          Clear
+        </Button>
+      </p>
     </div>
   );
 };

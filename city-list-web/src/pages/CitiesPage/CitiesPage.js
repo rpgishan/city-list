@@ -11,6 +11,8 @@ import {
 } from "./Actions";
 import CitiesSearchBar from "./CitiesSearchBar/CitiesSearchBar";
 import "./CityPage.scss";
+import CityPagination from "./CityPagination/CityPagination";
+import Button from "react-bootstrap/Button";
 
 const CitiesPage = ({ token, logout }) => {
   const dispatch = useDispatch();
@@ -56,31 +58,38 @@ const CitiesPage = ({ token, logout }) => {
 
   if (citiesPage && selectedCity) {
     return (
-      <div>
-        <div className="splitLeft">
-          <div className="topCentered">
+      <div className="splitLeft">
+        <div className="textCentered">
+          <p>
             <CitiesSearchBar
               isNameSearch={isNameSearch}
               loadCitiesByName={loadCities}
               loadInitialCitiesPage={loadInitialCitiesPage}
             />
-          </div>
-          <div className="listPanel">
+          </p>
+          <p>
+            <CityPagination
+                isPaginated={isPaginated}
+                pageNo={citiesPage.pageNo}
+                totalPages={citiesPage.totalPages}
+                isLast={citiesPage.last}
+                loadPage={loadNewPage}
+            />
+          </p>
+          <p>
             <CitiesList
               page={citiesPage}
               selectedCity={selectedCity}
-              isPaginated={isPaginated}
-              loadNewPage={loadNewPage}
               setSelectedCity={setSelectedCity}
             />
-          </div>
+          </p>
         </div>
 
         <div className="splitRight">
-          <div className={"absoluteright"}>
-            <input type="button" value="Logout" onClick={onLogout} />
+          <div className={"absoluteRight"}>
+            <Button onClick={onLogout}>Logout</Button>
           </div>
-          <div className="centered">
+          <div className="textCentered">
             <CityDetails
               city={selectedCity}
               isEditMode={isEditMode}
