@@ -3,11 +3,12 @@ import Pagination from "react-bootstrap/Pagination";
 import PageItem from "react-bootstrap/PageItem";
 
 const CityPagination = ({
-  isPaginated,
+  isNameSearch,
   pageNo,
   totalPages,
   isLast,
   loadPage,
+  loadCitiesByName,
 }) => {
   const currPageNo = pageNo + 1;
   const noOfShowItems = 5;
@@ -24,10 +25,18 @@ const CityPagination = ({
   if (endNumber > lastPageNo) {
     endNumber = lastPageNo;
     startNumber = lastPageNo - noOfShowItems + 1;
+    if (startNumber < initialPageNo) {
+      startNumber = initialPageNo;
+    }
   }
 
   const loadNewPage = (newPageNo) => {
-    loadPage(newPageNo - 1);
+    const pageNumber = newPageNo - 1;
+    if (isNameSearch) {
+      loadCitiesByName(pageNumber);
+    } else {
+      loadPage(pageNumber);
+    }
   };
 
   const onClickFirst = (event) => {
@@ -99,15 +108,11 @@ const CityPagination = ({
   );
   // items.push(<Pagination.Last disabled={isLast} onClick={onClickLast} />);
 
-  if (isPaginated) {
-    return (
-      <div>
-        <Pagination>{items}</Pagination>
-      </div>
-    );
-  } else {
-    return <div />;
-  }
+  return (
+    <div>
+      <Pagination size="sm">{items}</Pagination>
+    </div>
+  );
 };
 
 export default CityPagination;

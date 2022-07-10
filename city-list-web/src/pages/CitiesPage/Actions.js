@@ -1,5 +1,5 @@
 import {
-  SET_CITIES_DATA,
+  REMOVE_SEARCHED_CITY_NAME,
   SET_CITIES_PAGE_DATA,
   SET_CITY_EDIT,
   SET_CITY_VIEW,
@@ -7,6 +7,7 @@ import {
   SET_RETRIEVING_CITIES_DATA,
   SET_RETRIEVING_CITIES_FAILURE,
   SET_RETRIEVING_CITIES_SUCCESS,
+  SET_SEARCHED_CITY_NAME,
   SET_SELECTED_CITY_DATA,
   SET_SELECTED_CITY_UPDATE,
   SET_SELECTED_CITY_UPDATE_FAILURE,
@@ -14,12 +15,11 @@ import {
   SET_SELECTED_CITY_UPDATING,
 } from "./ActionTypes";
 import axios from "axios";
-import { apiBaseURL } from "../../common/constants";
+import { apiBaseURL, pageSize } from "../../common/constants";
 import { REMOVE_AUTH_DATA } from "../InitialPage/ActionTypes";
 import { StatusCodes } from "http-status-codes";
 
 export const loadCitiesPage = (token, pageNo = 0) => {
-  const pageSize = 10;
   return (dispatch) => {
     if (token) {
       const params = {
@@ -45,7 +45,7 @@ export const loadCitiesPage = (token, pageNo = 0) => {
           } else {
             page = {};
           }
-          dispatch(setCitiesPageData(page));
+          dispatch(setNonSearchedCitiesPageData(page));
           dispatch(setIsFailedToLoadData(false));
         })
         .catch((error) => {
@@ -56,7 +56,7 @@ export const loadCitiesPage = (token, pageNo = 0) => {
             alert("The user is not authorized to perform this action");
           } else {
             dispatch({ type: SET_RETRIEVING_CITIES_FAILURE, payload: true });
-            dispatch(setCitiesPageData({}));
+            dispatch(setNonSearchedCitiesPageData({}));
             dispatch(setIsFailedToLoadData(true));
           }
         })
@@ -67,7 +67,7 @@ export const loadCitiesPage = (token, pageNo = 0) => {
   };
 };
 
-export const loadCitiesByName = (token, name) => {
+export const loadCitiesByName = (token, name, pageNo = 0) => {
   return (dispatch) => {
     if (token) {
       const params = {
@@ -76,7 +76,7 @@ export const loadCitiesByName = (token, name) => {
           Authorization: token,
         },
       };
-      const url = `${apiBaseURL}/city/name?name=${name}`;
+      const url = `${apiBaseURL}/city/namepage?name=${name}&pageNo=${pageNo}&pageSize=${pageSize}`;
 
       dispatch({ type: SET_RETRIEVING_CITIES_DATA, payload: true });
       axios
@@ -85,15 +85,15 @@ export const loadCitiesByName = (token, name) => {
           dispatch({ type: SET_RETRIEVING_CITIES_SUCCESS, payload: true });
           const receivedData = response.data;
           const status = response.status;
-          let cities;
+          let page;
           if (status === StatusCodes.OK && receivedData) {
-            cities = response.data;
+            page = response.data;
           } else if (status === StatusCodes.UNAUTHORIZED) {
             dispatch({ type: REMOVE_AUTH_DATA });
           } else {
-            cities = {};
+            page = {};
           }
-          dispatch(setCitiesData(cities));
+          dispatch(setSearchedCitiesPageData(page));
           dispatch(setIsFailedToLoadData(false));
         })
         .catch((error) => {
@@ -104,7 +104,7 @@ export const loadCitiesByName = (token, name) => {
             alert("The user is not authorized to perform this action");
           } else {
             dispatch({ type: SET_RETRIEVING_CITIES_FAILURE, payload: true });
-            dispatch(setCitiesData([]));
+            dispatch(setSearchedCitiesPageData({}));
             dispatch(setIsFailedToLoadData(true));
           }
         })
@@ -115,7 +115,13 @@ export const loadCitiesByName = (token, name) => {
   };
 };
 
-export const updateCity = (token, city, citiesPage) => {
+export const updateCity = (
+  token,
+  city,
+  citiesPage,
+  isNameSearch,
+  searchedName
+) => {
   return (dispatch) => {
     if (token && city && city.id && city.name && city.photo) {
       const params = {
@@ -158,7 +164,13 @@ export const updateCity = (token, city, citiesPage) => {
         })
         .finally(() => {
           dispatch({ type: SET_SELECTED_CITY_UPDATING, payload: false });
-          dispatch(loadCitiesPage(token, citiesPage.pageNo || 0));
+          if (isNameSearch) {
+            dispatch(
+              loadCitiesByName(token, searchedName, citiesPage.pageNo || 0)
+            );
+          } else {
+            dispatch(loadCitiesPage(token, citiesPage.pageNo || 0));
+          }
         });
     }
   };
@@ -172,6 +184,21 @@ export const selectCity = (city) => {
   };
 };
 
+export const setSearchedCityName = (token, name, pageNo) => {
+  return (dispatch) => {
+    if (name) {
+      dispatch({ type: SET_SEARCHED_CITY_NAME, payload: name });
+      dispatch(loadCitiesByName(token, name, pageNo));
+    }
+  };
+};
+
+export const removeSearchedCityName = () => {
+  return (dispatch) => {
+    dispatch({ type: REMOVE_SEARCHED_CITY_NAME });
+  };
+};
+
 export const setEditMode = (isEditMode) => {
   return (dispatch) => {
     if (isEditMode) {
@@ -182,17 +209,18 @@ export const setEditMode = (isEditMode) => {
   };
 };
 
-const setCitiesPageData = (page) => {
-  return {
-    type: SET_CITIES_PAGE_DATA,
-    payload: page,
-  };
+const setNonSearchedCitiesPageData = (page) => {
+  return setCitiesPageData({ citiesPage: page, isNameSearch: false });
 };
 
-const setCitiesData = (cities) => {
+const setSearchedCitiesPageData = (page) => {
+  return setCitiesPageData({ citiesPage: page, isNameSearch: true });
+};
+
+const setCitiesPageData = (payload) => {
   return {
-    type: SET_CITIES_DATA,
-    payload: cities,
+    type: SET_CITIES_PAGE_DATA,
+    payload,
   };
 };
 

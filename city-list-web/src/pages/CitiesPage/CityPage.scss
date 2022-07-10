@@ -1,33 +1,28 @@
 /* Split the screen in half */
 .splitLeft {
   height: 100%;
-  width: 25%;
+  width: 30%;
   position: fixed;
   z-index: 1;
   top: 0;
   overflow-x: hidden;
   padding-top: 20px;
   left: 0;
-  background-color: #cecece;
 }
 
 .splitRight {
-  height: 100%;
-  width: 75%;
+  height: 95%;
+  width: 70%;
   position: fixed;
   z-index: 1;
-  top: 0;
+  top: 5%;
   overflow-x: hidden;
   padding-top: 20px;
   right: 0;
-  background-color: #ffeeee;
 }
 
 .absoluteRight {
   position: absolute;
+  top: 1%;
   right: 2%;
-}
-
-.textCentered {
-  text-align: center;
 }

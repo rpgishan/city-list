@@ -1,5 +1,5 @@
 import {
-  SET_CITIES_DATA,
+  REMOVE_SEARCHED_CITY_NAME,
   SET_CITIES_PAGE_DATA,
   SET_CITY_EDIT,
   SET_CITY_VIEW,
@@ -7,6 +7,7 @@ import {
   SET_RETRIEVING_CITIES_DATA,
   SET_RETRIEVING_CITIES_FAILURE,
   SET_RETRIEVING_CITIES_SUCCESS,
+  SET_SEARCHED_CITY_NAME,
   SET_SELECTED_CITY_DATA,
   SET_SELECTED_CITY_UPDATE,
   SET_SELECTED_CITY_UPDATE_FAILURE,
@@ -25,6 +26,7 @@ const initialState = {
   isFailedToLoadData: false,
   isPaginated: false,
   isNameSearch: false,
+  searchedName: undefined,
   updatingData: {
     pending: false,
     success: false,
@@ -42,21 +44,9 @@ export default (state = initialState, { type, payload } = {}) => {
     case SET_CITIES_PAGE_DATA:
       return {
         ...state,
-        citiesPage: payload,
+        citiesPage: payload.citiesPage,
         isPaginated: true,
-        isNameSearch: false,
-      };
-    case SET_CITIES_DATA:
-      return {
-        ...state,
-        citiesPage: {
-          content: payload,
-          last: true,
-          pageNo: 0,
-          totalPages: 1,
-        },
-        isPaginated: false,
-        isNameSearch: true,
+        isNameSearch: payload.isNameSearch,
       };
     case SET_SELECTED_CITY_DATA:
     case SET_SELECTED_CITY_UPDATE:
@@ -133,6 +123,18 @@ export default (state = initialState, { type, payload } = {}) => {
           success: false,
           failed: false,
         },
+      };
+    case SET_SEARCHED_CITY_NAME:
+      return {
+        ...state,
+        isNameSearch: true,
+        searchedName: payload,
+      };
+    case REMOVE_SEARCHED_CITY_NAME:
+      return {
+        ...state,
+        isNameSearch: false,
+        searchedName: undefined,
       };
     default:
       return state;

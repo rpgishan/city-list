@@ -5,6 +5,8 @@ import { loadCitiesPage } from "../CitiesPage/Actions";
 import { useToken } from "../../common/useToken";
 import CitiesPage from "../CitiesPage/CitiesPage";
 import { initiateLogin, initiateLogout, verifyToken } from "./Actions";
+import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 
 const InitialPage = () => {
   const dispatch = useDispatch();
@@ -13,6 +15,9 @@ const InitialPage = () => {
   const citiesPage = useSelector((state) => state.citiesPage.citiesPage);
   const isAuthenticated = useSelector(
     (state) => state.initialPage.isAuthenticated
+  );
+  const isAuthenticating = useSelector(
+    (state) => state.initialPage.retrievingData?.authenticating
   );
   const isFailedToLoadCityData = useSelector(
     (state) => state.citiesPage.isFailedToLoadData
@@ -29,7 +34,7 @@ const InitialPage = () => {
     }
   };
 
-  if (token) {
+  if (token && !isAuthenticated && !isAuthenticating) {
     dispatch(verifyToken(token, removeToken));
   }
 
@@ -39,13 +44,28 @@ const InitialPage = () => {
     }
 
     if (citiesPage.content) {
-      return <CitiesPage token={token} logout={logout} />;
+      return (
+        <div>
+          <Logout logout={logout} />
+          <CitiesPage token={token} />
+        </div>
+      );
     } else if (isFailedToLoadCityData) {
-      return <LoginError errorMsg="Cities loading error" />;
+      return (
+        <div>
+          <Logout logout={logout} />
+          <LoginError errorMsg="Cities loading error" />
+        </div>
+      );
     } else {
       return <Loading />;
     }
   }
+
+  if (isAuthenticating) {
+    return <Loading />;
+  }
+
   return <LoginPage login={login} />;
 };
 
@@ -53,8 +73,24 @@ const loadNewPage = (dispatch, token, pageNo) => {
   dispatch(loadCitiesPage(token, pageNo));
 };
 
+const Logout = ({ logout }) => {
+  const onLogout = (event) => {
+    event.preventDefault();
+    logout();
+  };
+  return (
+    <div className={"absoluteRight"}>
+      <Button onClick={onLogout}>Logout</Button>
+    </div>
+  );
+};
+
 const Loading = () => {
-  return <h1>Loading...</h1>;
+  return (
+    <Spinner animation="border" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </Spinner>
+  );
 };
 
 const LoginError = ({ errorMsg }) => {

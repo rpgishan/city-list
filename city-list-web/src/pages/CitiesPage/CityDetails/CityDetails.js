@@ -90,7 +90,7 @@ const EditMode = ({
   const saveDisabled = !newName || !newPhoto;
 
   return (
-    <div>
+    <div className={"container"}>
       <p>
         <FormControl
           type="text"
@@ -103,18 +103,23 @@ const EditMode = ({
       </p>
       <p>
         <textarea
+          className={"container-fluid"}
           value={newPhoto}
-          cols={80}
-          rows={5}
+          rows={4}
           onChange={handlePhotoChange}
         />
       </p>
       <p>
-        <Button disabled={saveDisabled} onClick={onSave}>
+        <Button
+          className={"my-2 mx-2"}
+          disabled={saveDisabled}
+          onClick={onSave}
+        >
           Save
         </Button>
-        <span> </span>
-        <Button onClick={onCancel}>Cancel</Button>
+        <Button className={"my-2 mx-2"} onClick={onCancel}>
+          Cancel
+        </Button>
       </p>
       <ImageView src={cityPhoto} alt={cityName} />
     </div>
@@ -123,11 +128,13 @@ const EditMode = ({
 
 const ViewMode = ({ name, photo, onEdit }) => {
   return (
-    <div>
+    <div className={"container"}>
       <h1>{name}</h1>
-      <span>{photo}</span>
       <p>
-        <Button onClick={onEdit}> Edit </Button>
+        <Button className={"my-2 mx-2"} onClick={onEdit}>
+          {" "}
+          Edit{" "}
+        </Button>
       </p>
       <ImageView src={photo} alt={name} />
     </div>

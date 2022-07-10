@@ -34,20 +34,26 @@ const CitiesSearchBar = ({
   };
 
   return (
-    <div>
+    <div className="mb-2 mx-auto">
       <FormControl
         type="text"
         size={"lg"}
         value={name}
         onChange={handleNameChange}
       />
-      <Button value="Search" disabled={isSearchDisabled} onClick={onSearch}>
-        Search
-      </Button>
-      <span> </span>
-      <Button disabled={isClearDisabled} onClick={onClear}>
-        Clear
-      </Button>
+      <div className={"mt-2"}>
+        <Button
+          className={"me-1"}
+          value="Search"
+          disabled={isSearchDisabled}
+          onClick={onSearch}
+        >
+          Search
+        </Button>
+        <Button className={"ms-1"} disabled={isClearDisabled} onClick={onClear}>
+          Clear
+        </Button>
+      </div>
     </div>
   );
 };
